@@ -1,0 +1,41 @@
+name: build
+on:
+  push:
+  schedule:
+    #- cron: '0 * * * *' # hourly.
+    - cron: '0 0 * * WED' # every wednesday.
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: npm install
+      - name: Scrape
+        run: node scrape.js
+      - name: Run
+        run: pwsh -File run.ps1
+      - name: Commit data.json
+        if: github.event.schedule
+        shell: bash
+        run: |
+          set -euxo pipefail
+          if [ -n "$(git status -s data.json)" ]; then
+            git config user.name 'Auto-commit'
+            git config user.email 'auto-commit@localhost'
+            echo 'Committing data.json...'
+            git add data.json
+            git diff --staged
+            git commit -m 'auto-commit data.json'
+            git push
+          fi
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: data
+          path: |
+            data.json

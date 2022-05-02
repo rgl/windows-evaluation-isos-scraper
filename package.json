@@ -1,0 +1,16 @@
+
+{
+    "name": "windows-evaluation-isos-scraper",
+    "version": "1.0.0",
+    "description": "get the latest windows evaluation iso url",
+    "main": "scrape.js",
+    "author": "Rui Lopes <rgl@ruilopes.com>",
+    "license": "GPL-3.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rgl/postgresql-windows-vagrant.git"
+    },
+    "dependencies": {
+        "puppeteer": "^13.7.0"
+    }
+}

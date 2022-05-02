@@ -1,0 +1,48 @@
+# About
+
+This scrapes the Windows Evaluation ISO addresses into a JSON data file.
+
+## Scraped Windows Editions
+
+* [Windows 10](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise)
+* [Windows 11](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-11-enterprise)
+* [Windows 2016](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2016)
+* [Windows 2019](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019)
+* [Windows 2022](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022)
+
+## Data File
+
+The code in this repository creates a `data.json` file with an array of Windows editions objects, for example, the `windows-2022` will be alike:
+
+```json
+[
+  {
+    "name": "windows-2022",
+    "url": "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso",
+    "checksum": "3e4fa6d8507b554856fc9ca6079cc402df11a8b79344871669f0251535255325",
+    "size": 5044094976,
+    "images": [
+      {
+        "index": 1,
+        "name": "Windows Server 2022 Standard Evaluation",
+        "version": "10.0.20348.587"
+      },
+      {
+        "index": 2,
+        "name": "Windows Server 2022 Standard Evaluation (Desktop Experience)",
+        "version": "10.0.20348.587"
+      },
+      {
+        "index": 3,
+        "name": "Windows Server 2022 Datacenter Evaluation",
+        "version": "10.0.20348.587"
+      },
+      {
+        "index": 4,
+        "name": "Windows Server 2022 Datacenter Evaluation (Desktop Experience)",
+        "version": "10.0.20348.587"
+      }
+    ]
+  }
+]
+```
