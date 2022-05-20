@@ -11,37 +11,37 @@
 //      $env:DEBUG = 'puppeteer:*'
 //      node main.js
 
-const puppeteer = require("puppeteer");
-const fs = require("fs");
+import puppeteer from "puppeteer";
+import fs from "fs";
+import fetch from "node-fetch";
 
-async function getEvaluationIsos(page, url) {
+async function getEvaluationIsos(page, url, filterRegExp) {
     console.log("scraping", url);
 
     await page.goto(url);
 
-    return await page.evaluate(() => {
+    return await page.evaluate(async (filterRegExp) => {
         var data = [];
-        for (const el of document.querySelectorAll("input[routingForm]")) {
-            const fileTypeName = el.getAttribute("filetypename");
-            const routingForm = JSON.parse(el.getAttribute("routingForm"));
-            const downloads = routingForm.downloadURLs;
-            const download = downloads.find(d => (d.bits == "64" || d.bits == "") && d.lang == "EN-US");
-            if (!download) {
+        const els = document.querySelectorAll("a[aria-label*=' ISO '][aria-label*=' 64-bit '][aria-label*='(en-US)']")
+        for (const el of els) {
+            const label = el.getAttribute("aria-label");
+            if (filterRegExp && !label.match(filterRegExp)) {
                 continue;
             }
-            const name = fileTypeName
+            const name = label
                 .toLowerCase()
-                .replace(/\s*(download|the|iso|enterprise)\s*/g, "")
-                .replace(/[^a-z0-9]+/g, " ")
-                .trim();
-            const url = download.url;
+                .replace(/\s*(download|server|iso|ltsc|enterprise|64-bit|\(en-US\))\s*/ig, " ")
+                .replace(/[^a-z0-9]+/ig, " ")
+                .trim()
+                .replace(" ", "-");
+            const url = el.getAttribute("href");
             data.push({
                 name: name,
                 url: url,
             });
         }
         return data;
-    });
+    }, filterRegExp);
 }
 
 async function main() {
@@ -73,20 +73,17 @@ async function main() {
 
         const data = {};
         var targets = [
-            ["windows-10",   "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise"],
-            ["windows-11",   "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-11-enterprise"],
-            ["windows-2016", "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2016"],
-            ["windows-2019", "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019"],
-            ["windows-2022", "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022"],
+            ["windows-10",   /ltsc/i, "https://www.microsoft.com/en-us/evalcenter/download-windows-10-enterprise"],
+            ["windows-11",   null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
+            ["windows-2016", null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2016"],
+            ["windows-2019", null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2019"],
+            ["windows-2022", null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
         ];
-        for (const [name, url] of targets) {
-            const isos = await getEvaluationIsos(page, url);
+        for (const [name, filterRegExp, url] of targets) {
+            const isos = await getEvaluationIsos(page, url, filterRegExp);
             for (const iso of isos) {
-                if (iso.name) {
-                    data[`${name}-${iso.name}`] = iso.url;
-                } else {
-                    data[name] = iso.url;
-                }
+                const response = await fetch(iso.url, {method: 'HEAD'});
+                data[iso.name] = response.url;
             }
         }
 

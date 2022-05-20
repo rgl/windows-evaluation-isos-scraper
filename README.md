@@ -2,8 +2,6 @@
 
 This scrapes the Windows Evaluation ISO addresses into a JSON data file.
 
-**NB This is currently BROKEN because [Microsoft Evaluation Center is temporarily unavailable](https://techcommunity.microsoft.com/t5/windows-11/accessing-trials-and-kits-for-windows-eval-center-workaround/m-p/3361125)**
-
 ## Scraped Windows Editions
 
 * [Windows 10](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise)
