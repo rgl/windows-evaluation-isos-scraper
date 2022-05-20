@@ -1,3 +1,7 @@
+param(
+    [string]$name
+)
+
 Set-StrictMode -Version Latest
 $ProgressPreference = 'SilentlyContinue'
 $ErrorActionPreference = 'Stop'
@@ -52,8 +56,13 @@ function Get-IsoWindowsImages($isoPath) {
     }
 }
 
-function Run {
-    $scrape = Get-Content -Raw scrape.json | ConvertFrom-Json
+function Run([string]$name) {
+    node scrape.js $name
+    if ($LASTEXITCODE) {
+        throw "failed to scrape image with exit code $LASTEXITCODE"
+    }
+    $scrapePath = "data/$name-scrape.json"
+    $scrape = Get-Content -Raw $scrapePath | ConvertFrom-Json
     $data = $scrape.PSObject.Properties | ForEach-Object {
         $isoUrl = $_.Value
         $isoPath = Split-Path -Leaf (([uri]$isoUrl).AbsolutePath)
@@ -82,8 +91,8 @@ function Run {
         throw 'Could not find any valid data in scrape.json'
     }
     Set-Content `
-        -Path 'data.json' `
+        -Path "data/$name.json" `
         -Value ($data | ConvertTo-Json -Depth 100)
 }
 
-Run
+Run $name

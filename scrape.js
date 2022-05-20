@@ -13,9 +13,10 @@
 
 import puppeteer from "puppeteer";
 import fs from "fs";
+import path from "path";
 import fetch from "node-fetch";
 
-async function getEvaluationIsos(page, url, filterRegExp) {
+async function getEvaluationIsos(page, filterRegExp, url) {
     console.log("scraping", url);
 
     await page.goto(url);
@@ -44,7 +45,7 @@ async function getEvaluationIsos(page, url, filterRegExp) {
     }, filterRegExp);
 }
 
-async function main() {
+async function main(name) {
     console.log("launching");
     const browser = await puppeteer.launch({
         headless: true,
@@ -71,27 +72,31 @@ async function main() {
             }
         );
 
+        var targets = {
+            "windows-10":   [/ltsc/i, "https://www.microsoft.com/en-us/evalcenter/download-windows-10-enterprise"],
+            "windows-11":   [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
+            "windows-2016": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2016"],
+            "windows-2019": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2019"],
+            "windows-2022": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
+        };
+        const target = targets[name];
+        if (!target) {
+            throw `unknown target ${name}`;
+        }
         const data = {};
-        var targets = [
-            ["windows-10",   /ltsc/i, "https://www.microsoft.com/en-us/evalcenter/download-windows-10-enterprise"],
-            ["windows-11",   null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
-            ["windows-2016", null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2016"],
-            ["windows-2019", null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2019"],
-            ["windows-2022", null,   "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
-        ];
-        for (const [name, filterRegExp, url] of targets) {
-            const isos = await getEvaluationIsos(page, url, filterRegExp);
-            for (const iso of isos) {
-                const response = await fetch(iso.url, {method: 'HEAD'});
-                data[iso.name] = response.url;
-            }
+        const isos = await getEvaluationIsos(page, ...target);
+        for (const iso of isos) {
+            const response = await fetch(iso.url, {method: 'HEAD'});
+            data[iso.name] = response.url;
         }
 
-        console.log("saving to scrape.json");
-        fs.writeFileSync("scrape.json", JSON.stringify(data, null, 4));
+        const scrapePath = `data/${name}-scrape.json`;
+        console.log(`saving to ${scrapePath}`);
+        fs.mkdirSync(path.dirname(scrapePath), {recursive: true});
+        fs.writeFileSync(scrapePath, JSON.stringify(data, null, 4));
     } finally {
         await browser.close();
     }
 }
 
-main();
+await main(...process.argv.slice(2));

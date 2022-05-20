@@ -6,6 +6,13 @@ on:
     - cron: '0 0 * * WED' # every wednesday.
 jobs:
   build:
+    strategy:
+      matrix:
+        include:
+          - name: windows-10
+          - name: windows-11
+          - name: windows-2016
+          - name: windows-2022
     runs-on: windows-2022
     steps:
       - name: Checkout
@@ -15,27 +22,46 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run: npm ci
-      - name: Scrape
-        run: node scrape.js
-      - name: Run
-        run: pwsh -File run.ps1
-      - name: Commit data.json
-        if: github.event.schedule
-        shell: bash
+      - name: Build
+        run: pwsh scrape.ps1 ${{ matrix.name }}
+      - name: Build summary
         run: |
-          set -euxo pipefail
-          if [ -n "$(git status -s data.json)" ]; then
-            git config user.name 'Auto-commit'
-            git config user.email 'auto-commit@localhost'
-            echo 'Committing data.json...'
-            git add data.json
-            git diff --staged
-            git commit -m 'auto-commit data.json'
-            git push
-          fi
+          $iso = Get-Content (Resolve-Path data/${{ matrix.name }}.json) | ConvertFrom-Json
+          Add-Content $env:GITHUB_STEP_SUMMARY @"
+          | Property | Value |
+          | :--- | :--- |
+          | Name | $($iso.name) |
+          | Version | $($iso.images.version | Select-Object -First 1) |
+          | Iso | [$(Split-Path -Leaf $iso.url)]($($iso.url)) |
+          | Checksum | $($iso.checksum) |
+          | Size | $($iso.size) |
+          $(($iso.images | ForEach-Object {"| Image #$($_.index) Name | $($_.name) |"}) -join "`n")
+          "@
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: data
+          name: ${{ matrix.name }}
           path: |
-            data.json
+            data/${{ matrix.name }}.json
+  commit:
+    if: github.event.schedule
+    name: Commit
+    runs-on: ubuntu-20.04
+    needs:
+      - build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Commit data
+        shell: bash
+        run: |
+          set -euxo pipefail
+          if [ -n "$(git status -s data)" ]; then
+            git config user.name 'Auto-commit'
+            git config user.email 'auto-commit@localhost'
+            echo 'Committing data...'
+            git add data
+            git diff --staged
+            git commit -m 'auto-commit data'
+            git push
+          fi
