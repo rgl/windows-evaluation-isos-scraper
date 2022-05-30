@@ -11,7 +11,7 @@ jobs:
         include:
           - name: windows-10
           - name: windows-11
-          - name: windows-2016
+          - name: windows-2019
           - name: windows-2022
     runs-on: windows-2022
     steps:
