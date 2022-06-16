@@ -32,6 +32,7 @@ jobs:
           | :--- | :--- |
           | Name | $($iso.name) |
           | Version | $($iso.images.version | Select-Object -First 1) |
+          | Created At | $($iso.createdAt.ToString('O')) |
           | Iso | [$(Split-Path -Leaf $iso.url)]($($iso.url)) |
           | Checksum | $($iso.checksum) |
           | Size | $($iso.size) |

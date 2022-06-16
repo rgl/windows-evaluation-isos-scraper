@@ -6,9 +6,9 @@ Set-StrictMode -Version Latest
 $ProgressPreference = 'SilentlyContinue'
 $ErrorActionPreference = 'Stop'
 trap {
-    Write-Output "ERROR: $_"
-    Write-Output (($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1')
-    Write-Output (($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1')
+    "ERROR: $_" | Write-Host
+    ($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1' | Write-Host
+    ($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1' | Write-Host
     Exit 1
 }
 
@@ -57,6 +57,7 @@ function Get-IsoWindowsImages($isoPath) {
 }
 
 function Run([string]$name) {
+    Add-Type -Path IsoInfo.cs
     node scrape.js $name
     if ($LASTEXITCODE) {
         throw "failed to scrape image with exit code $LASTEXITCODE"
@@ -73,6 +74,7 @@ function Run([string]$name) {
         Write-Host "Getting the $isoPath checksum"
         $checksum = (Get-FileHash -Algorithm SHA256 -Path $isoPath).Hash.ToLowerInvariant()
         $size = (Get-Item $isoPath).Length
+        $createdAt = [IsoInfo]::GetVolumeCreationDate($isoPath)
         # in CI we remove the iso file because there is limited disk space.
         # see https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
         # see https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
@@ -84,6 +86,7 @@ function Run([string]$name) {
             url = $isoUrl
             checksum = $checksum
             size = $size
+            createdAt = $createdAt
             images = $images
         }
     }
