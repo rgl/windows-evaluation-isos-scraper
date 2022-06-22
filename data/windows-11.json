@@ -1,0 +1,12 @@
+{
+  "name": "windows-11",
+  "url": "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/22000.318.211104-1236.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
+  "checksum": "684bc16adbd792ef2f7810158a3f387f23bf95e1aee5f16270c5b7f56db753b6",
+  "size": 5069762560,
+  "createdAt": "2021-11-06T00:00:00+00:00",
+  "images": {
+    "index": 1,
+    "name": "Windows 11 Enterprise Evaluation",
+    "version": "10.0.22000.318"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "windows-2019",
+  "url": "https://software-static.download.prss.microsoft.com/pr/download/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
+  "checksum": "549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1",
+  "size": 5296713728,
+  "createdAt": "2019-09-08T00:00:00+00:00",
+  "images": [
+    {
+      "index": 1,
+      "name": "Windows Server 2019 Standard Evaluation",
+      "version": "10.0.17763.737"
+    },
+    {
+      "index": 2,
+      "name": "Windows Server 2019 Standard Evaluation (Desktop Experience)",
+      "version": "10.0.17763.737"
+    },
+    {
+      "index": 3,
+      "name": "Windows Server 2019 Datacenter Evaluation",
+      "version": "10.0.17763.737"
+    },
+    {
+      "index": 4,
+      "name": "Windows Server 2019 Datacenter Evaluation (Desktop Experience)",
+      "version": "10.0.17763.737"
+    }
+  ]
+}
