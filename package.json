@@ -1,6 +1,6 @@
 {
     "name": "windows-evaluation-isos-scraper",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "type": "module",
     "description": "get the latest windows evaluation iso url",
     "main": "scrape.js",
@@ -8,10 +8,10 @@
     "license": "GPL-3.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/rgl/postgresql-windows-vagrant.git"
+        "url": "https://github.com/rgl/windows-evaluation-isos-scraper.git"
     },
     "dependencies": {
-        "node-fetch": "^3.2.6",
-        "puppeteer": "^14.4.0"
+        "node-fetch": "^3.3.0",
+        "puppeteer": "^19.4.1"
     }
 }
