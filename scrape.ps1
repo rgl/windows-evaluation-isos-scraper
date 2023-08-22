@@ -70,7 +70,7 @@ function Run([string]$name) {
         if (!(Test-Path $isoPath)) {
             Get-Iso $isoUrl $isoPath
         }
-        $images = Get-IsoWindowsImages $isoPath
+        [array]$images = Get-IsoWindowsImages $isoPath
         Write-Host "Getting the $isoPath checksum"
         $checksum = (Get-FileHash -Algorithm SHA256 -Path $isoPath).Hash.ToLowerInvariant()
         $size = (Get-Item $isoPath).Length
