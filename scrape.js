@@ -50,6 +50,7 @@ async function main(name) {
     const browser = await puppeteer.launch({
         headless: true,
         dumpio: false,
+        headless: "new",
     });
     try {
         console.log("getting the browser version");
