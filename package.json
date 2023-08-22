@@ -1,6 +1,6 @@
 {
     "name": "windows-evaluation-isos-scraper",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "type": "module",
     "description": "get the latest windows evaluation iso url",
     "main": "scrape.js",
@@ -11,7 +11,7 @@
         "url": "https://github.com/rgl/windows-evaluation-isos-scraper.git"
     },
     "dependencies": {
-        "node-fetch": "^3.3.1",
-        "puppeteer": "^19.10.1"
+        "node-fetch": "^3.3.2",
+        "puppeteer": "^21.1.0"
     }
 }
