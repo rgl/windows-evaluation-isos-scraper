@@ -1,14 +1,14 @@
 {
   "name": "windows-11",
-  "url": "https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66751/22621.525.220925-0207.ni_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
-  "checksum": "ebbc79106715f44f5020f77bd90721b17c5a877cbc15a3535b99155493a1bb3f",
-  "size": 5088602112,
-  "createdAt": "2022-09-26T00:00:00+00:00",
+  "url": "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/22631.2428.231001-0608.23H2_NI_RELEASE_SVC_REFRESH_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
+  "checksum": "c8dbc96b61d04c8b01faf6ce0794fdf33965c7b350eaa3eb1e6697019902945c",
+  "size": 6209064960,
+  "createdAt": "2023-10-02T00:00:00+00:00",
   "images": [
     {
       "index": 1,
       "name": "Windows 11 Enterprise Evaluation",
-      "version": "10.0.22621.525"
+      "version": "10.0.22631.2428"
     }
   ]
 }
