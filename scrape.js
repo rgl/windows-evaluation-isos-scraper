@@ -75,7 +75,6 @@ async function main(name) {
 
         var targets = {
             "windows-11":   [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
-            "windows-2019": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2019"],
             "windows-2022": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
         };
         const target = targets[name];
