@@ -1,6 +1,6 @@
 {
     "name": "windows-evaluation-isos-scraper",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "type": "module",
     "description": "get the latest windows evaluation iso url",
     "main": "scrape.js",
@@ -12,6 +12,6 @@
     },
     "dependencies": {
         "node-fetch": "^3.3.2",
-        "puppeteer": "^21.1.0"
+        "puppeteer": "^21.5.2"
     }
 }
