@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: windows-10
           - name: windows-11
           - name: windows-2019
           - name: windows-2022
