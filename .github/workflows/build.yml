@@ -38,7 +38,7 @@ jobs:
           $(($iso.images | ForEach-Object {"| Image #$($_.index) Name | $($_.name) |"}) -join "`n")
           "@
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
           path: |
@@ -53,7 +53,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: data
       - name: Commit data
