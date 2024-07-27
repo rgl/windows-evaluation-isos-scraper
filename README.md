@@ -6,6 +6,7 @@ This scrapes the Windows Evaluation ISO addresses into a JSON data file.
 
 * [Windows 11](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-11-enterprise)
 * [Windows 2022](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022)
+* [Windows 2025](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2025)
 
 ## Data Files
 

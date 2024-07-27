@@ -31,10 +31,10 @@ async function getEvaluationIsos(page, filterRegExp, url) {
             }
             const name = label
                 .toLowerCase()
-                .replace(/\s*(download|server|iso|ltsc|enterprise|64-bit|\(en-US\))\s*/ig, " ")
+                .replace(/\s*(edition|preview|download|server|iso|ltsc|enterprise|64-bit|\(en-US\))\s*/ig, " ")
                 .replace(/[^a-z0-9]+/ig, " ")
                 .trim()
-                .replace(" ", "-");
+                .replace(/ +/ig, "-");
             const url = el.getAttribute("href");
             data.push({
                 name: name,
@@ -76,6 +76,7 @@ async function main(name) {
         var targets = {
             "windows-11":   [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
             "windows-2022": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
+            "windows-2025": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025"],
         };
         const target = targets[name];
         if (!target) {
