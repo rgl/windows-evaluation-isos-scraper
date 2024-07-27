@@ -12,6 +12,6 @@
     },
     "dependencies": {
         "node-fetch": "^3.3.2",
-        "puppeteer": "^22.1.0"
+        "puppeteer": "^22.14.0"
     }
 }
