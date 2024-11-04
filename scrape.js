@@ -1,5 +1,3 @@
-"use strict";
-
 // install dependencies:
 //
 //      npm install
