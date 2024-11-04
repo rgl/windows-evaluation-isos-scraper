@@ -12,7 +12,6 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
-import fetch from "node-fetch";
 
 async function getEvaluationIsos(page, filterRegExp, url) {
     console.log("scraping", url);
