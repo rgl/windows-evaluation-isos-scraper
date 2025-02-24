@@ -12,6 +12,7 @@ jobs:
       matrix:
         include:
           - name: windows-11
+          - name: windows-11-iot
           - name: windows-2022
           - name: windows-2025
     runs-on: windows-2022

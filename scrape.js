@@ -13,33 +13,33 @@ import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
 
-async function getEvaluationIsos(page, filterRegExp, url) {
-    console.log("scraping", url);
+async function getEvaluationIsos(page, name, filterRegExp, url) {
+    console.log("scraping", name, "from", url);
 
     await page.goto(url);
 
-    return await page.evaluate(async (filterRegExp) => {
+    return await page.evaluate(async (name, filterRegExp) => {
         var data = [];
-        const els = document.querySelectorAll("a[aria-label*=' ISO '][aria-label*=' 64-bit '][aria-label*='(en-US)']")
+        const els = document.querySelectorAll("a[aria-label*=' ISO '][aria-label*='(en-US)'][aria-label*=' 64-bit '],a[aria-label*=' ISO '][aria-label*='(en-US)'][aria-label*=' AMD64 ']")
         for (const el of els) {
-            const label = el.getAttribute("aria-label");
+            const ariaLabel = el.getAttribute("aria-label");
             if (filterRegExp && !label.match(filterRegExp)) {
                 continue;
             }
-            const name = label
+            const label = ariaLabel
                 .toLowerCase()
-                .replace(/\s*(edition|preview|download|server|iso|ltsc|enterprise|64-bit|\(en-US\))\s*/ig, " ")
+                .replace(/\s*(edition|preview|download|server|iso|ltsc|enterprise|64-bit|amd64|\(en-US\))\s*/ig, " ")
                 .replace(/[^a-z0-9]+/ig, " ")
                 .trim()
                 .replace(/ +/ig, "-");
             const url = el.getAttribute("href");
             data.push({
-                name: name,
+                name: /windows/i.test(label) ? label : name,
                 url: url,
             });
         }
         return data;
-    }, filterRegExp);
+    }, name, filterRegExp);
 }
 
 async function main(name) {
@@ -71,16 +71,17 @@ async function main(name) {
         );
 
         var targets = {
-            "windows-11":   [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
-            "windows-2022": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
-            "windows-2025": [null,    "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025"],
+            "windows-11":       [null,  "https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise"],
+            "windows-11-iot":   [null,  "https://www.microsoft.com/en-us/evalcenter/download-windows-11-iot-enterprise-ltsc-eval"],
+            "windows-2022":     [null,  "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"],
+            "windows-2025":     [null,  "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025"],
         };
         const target = targets[name];
         if (!target) {
             throw `unknown target ${name}`;
         }
         const data = {};
-        const isos = await getEvaluationIsos(page, ...target);
+        const isos = await getEvaluationIsos(page, name, ...target);
         for (const iso of isos) {
             const response = await fetch(iso.url, {method: 'HEAD'});
             data[iso.name] = response.url;
