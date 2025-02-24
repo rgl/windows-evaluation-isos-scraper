@@ -11,6 +11,6 @@
         "url": "https://github.com/rgl/windows-evaluation-isos-scraper.git"
     },
     "dependencies": {
-        "puppeteer": "^23.6.1"
+        "puppeteer": "^24.3.0"
     }
 }
