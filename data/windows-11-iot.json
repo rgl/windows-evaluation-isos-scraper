@@ -1,0 +1,14 @@
+{
+  "name": "windows-11-iot",
+  "url": "https://software-static.download.prss.microsoft.com/dbazure/998969d5-f34g-4e03-ac9d-1f9786c66749/26100.1742.240906-0331.ge_release_svc_refresh_CLIENT_IOT_LTSC_EVAL_x64FRE_en-us.iso",
+  "checksum": "2cee70bd183df42b92a2e0da08cc2bb7a2a9ce3a3841955a012c0f77aeb3cb29",
+  "size": 5060020224,
+  "createdAt": "2024-09-07T00:00:00+00:00",
+  "images": [
+    {
+      "index": 1,
+      "name": "Windows 11 IoT Enterprise LTSC Evaluation",
+      "version": "10.0.26100.1742"
+    }
+  ]
+}
